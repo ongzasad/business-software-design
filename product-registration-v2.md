@@ -9,6 +9,7 @@ sequenceDiagram
     participant IDB as Insurance Database
     P->>+A: Product details
     A->>+IDB: Fetch statistics data
+    IDB-->>+A: Statistical data
     A->>-P: Product price
     P->>+P: Review
 
@@ -16,6 +17,7 @@ sequenceDiagram
         loop reject by Product Development
             P->>+A: Product details
             A->>+IDB: Fetch statistics data
+            IDB-->>+A: Statistical data
             A->>-P: Product price
             P->>+P: Review
         end
@@ -29,12 +31,14 @@ sequenceDiagram
         loop reject by Legal
             P->>+A: Product details
             A->>+IDB: Fetch statistics data
+            IDB-->>+A: Statistical data
             A->>-P: Product price
             P->>+P: Review
             alt Product Development reject
                 loop reject by Product Development
                     P->>+A: Product details
                     A->>+IDB: Fetch statistics data
+                    IDB-->>+A: Statistical data
                     A->>-P: Product price
                     P->>+P: Review
                 end
@@ -47,8 +51,10 @@ sequenceDiagram
     
     else Legal approve
     L->>+R: Policy Details
-    RDB->>+R: Fetch rules
-    B->>+R: Fetch rules
+    R->>+RDB: Fetch Rules
+    RDB-->>+R: Rules
+    B->>+R: Fetch Rules
+    B-->>+R: Rules
     R->>+R: Compliance check
 
     alt Compliance reject
@@ -56,6 +62,7 @@ sequenceDiagram
         loop reject by Compliance
             P->>+A: Product details
             A->>+IDB: Fetch statistics data
+            IDB-->>+A: Statistical data
             A->>-P: Product price
             P->>+P: Review
         end
@@ -64,6 +71,7 @@ sequenceDiagram
                 loop reject by Product Development
                     P->>+A: Product details
                     A->>+IDB: Fetch statistics data
+                    IDB-->>+A: Statistical data
                     A->>-P: Product price
                     P->>+P: Review
                 end
@@ -78,12 +86,14 @@ sequenceDiagram
             loop reject by Legal
                 P->>+A: Product details
                 A->>+IDB: Fetch statistics data
+                IDB-->>+A: Statistical data
                 A->>-P: Product price
                 P->>+P: Review
                 alt Product Development reject
                     loop reject by Product Development
                         P->>+A: Product details
                         A->>+IDB: Fetch statistics data
+                        IDB-->>+A: Statistical data
                         A->>-P: Product price
                         P->>+P: Review
                     end
@@ -95,8 +105,10 @@ sequenceDiagram
         A->>+L: Product terms and conditions
         L->>+L: Review T&C
         L->>+R: Policy Details
-        RDB->>+R: Fetch rules
-        B->>+R: Fetch rules
+        R->>+RDB: Fetch Rules
+        RDB-->>+R: Rules
+        R->>+B: Fetch Rules
+        B-->>+R: Rules
         R->>+R: Compliance check
     end
     else Compliance approve
